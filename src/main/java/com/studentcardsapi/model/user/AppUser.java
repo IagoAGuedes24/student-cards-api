@@ -1,9 +1,8 @@
-package com.studentcardsapi.model;
+package com.studentcardsapi.model.user;
 
-import com.studentcardsapi.enums.UserRole;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.studentcardsapi.enums.AppUserRole;
+import com.studentcardsapi.model.GenericModel;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -17,9 +16,9 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-@Entity
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class AppUser extends  GenericModel  implements UserDetails {
+@MappedSuperclass
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public abstract class AppUser extends GenericModel implements UserDetails {
 
     private String name;
 
@@ -29,12 +28,12 @@ public class AppUser extends  GenericModel  implements UserDetails {
 
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole userRole;
-
     private Boolean locked = false;
 
     private Boolean enabled = true;
+
+    @Enumerated(EnumType.STRING)
+    private AppUserRole userRole;
 
     private String recoveryPasswordToken;
 
@@ -43,11 +42,11 @@ public class AppUser extends  GenericModel  implements UserDetails {
     private Date creationDate;
 
     @Override
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(getClass().getName().toUpperCase());
         return Collections.singletonList(authority);
     }
-
     @Override
     public String getPassword() {
         return password;
