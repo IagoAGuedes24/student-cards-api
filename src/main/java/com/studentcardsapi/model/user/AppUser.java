@@ -16,11 +16,14 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-@MappedSuperclass
+@Entity
+@Inheritance(strategy =  InheritanceType.TABLE_PER_CLASS)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public abstract class AppUser extends GenericModel implements UserDetails {
+public class AppUser extends GenericModel implements UserDetails {
 
     private String name;
+
+    private String cpf;
 
     // e-mail
     @EqualsAndHashCode.Include
