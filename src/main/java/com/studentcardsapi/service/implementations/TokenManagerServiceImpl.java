@@ -9,14 +9,14 @@ import com.studentcardsapi.exception.ApiRequestException;
 import com.studentcardsapi.model.user.AppUser;
 import com.studentcardsapi.service.interfaces.AppUserService;
 import com.studentcardsapi.service.interfaces.TokenManagerService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
