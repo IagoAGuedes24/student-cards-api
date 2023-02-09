@@ -13,6 +13,6 @@ public interface AppUserRepository<T extends AppUser> extends JpaRepository<T, L
 
     Optional<T> findByUsername(String username);
 
-    Collection<AppUser> findAllByUserRole(AppUserRole userRole);
+    Collection<T> findAllByUserRole(AppUserRole userRole);
 
 }
