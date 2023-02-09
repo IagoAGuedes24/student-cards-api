@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface AppUserRepository<T extends AppUser> extends JpaRepository<T, Long> {
 
     Optional<T> findByUsername(String username);
-    
+
     Optional<T> findByUsernameAndEnabled(String username, boolean enabled);
 
     Optional<T> findByUsernameConfirmationToken(String activationToken);
