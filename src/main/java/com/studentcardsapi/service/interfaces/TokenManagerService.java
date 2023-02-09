@@ -2,10 +2,10 @@ package com.studentcardsapi.service.interfaces;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.studentcardsapi.model.user.AppUser;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface TokenManagerService {
