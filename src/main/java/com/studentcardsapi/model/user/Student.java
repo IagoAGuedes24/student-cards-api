@@ -1,7 +1,7 @@
 package com.studentcardsapi.model.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Student extends AppUser {

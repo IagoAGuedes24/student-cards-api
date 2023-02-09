@@ -1,6 +1,6 @@
 package com.studentcardsapi.model.user;
 
-import jakarta.persistence.Entity;
+import javax.persistence.Entity;
 
 @Entity
 public class Professor extends AppUser {
