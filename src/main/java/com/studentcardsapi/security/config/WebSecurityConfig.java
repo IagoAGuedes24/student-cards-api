@@ -23,7 +23,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-import static com.studentcardsapi.security.config.TokenConstants.*;
+import static com.studentcardsapi.utils.TokenConstants.*;
 
 @Configuration
 @AllArgsConstructor
