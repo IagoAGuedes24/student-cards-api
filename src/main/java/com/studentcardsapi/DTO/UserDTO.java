@@ -16,4 +16,6 @@ public class UserDTO {
 
     private AppUserRole userRole;
 
+    private String usernameConfirmationToken;
+
 }

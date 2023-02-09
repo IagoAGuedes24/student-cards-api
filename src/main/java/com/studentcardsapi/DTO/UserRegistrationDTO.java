@@ -12,12 +12,9 @@ public class UserRegistrationDTO {
 
     private String name;
 
-    private AppUserRole appUserRole;
+    private AppUserRole userRole;
     private String cpf;
 
     private String username;
 
-    private String password;
-
-    private String passwordConfirmation;
 }
