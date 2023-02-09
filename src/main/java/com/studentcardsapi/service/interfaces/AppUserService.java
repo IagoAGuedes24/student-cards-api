@@ -12,4 +12,8 @@ public interface AppUserService extends UserDetailsService {
     AppUser getUser(Long id);
 
     AppUser registerUser(UserRegistrationDTO userRegistrationDTO);
+
+    AppUser confirmUsername(String activationToken);
+
+    void generateActivationToken(AppUser appUser);
 }
