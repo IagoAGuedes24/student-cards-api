@@ -2,9 +2,11 @@ package com.studentcardsapi.model.user;
 
 import com.studentcardsapi.enums.AppUserRole;
 import com.studentcardsapi.model.GenericModel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +18,7 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Inheritance(strategy =  InheritanceType.TABLE_PER_CLASS)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
@@ -33,14 +36,18 @@ public class AppUser extends GenericModel implements UserDetails {
 
     private Boolean locked = false;
 
-    private Boolean enabled = true;
+    private Boolean enabled = false;
 
     @Enumerated(EnumType.STRING)
     private AppUserRole userRole;
 
-    private String recoveryPasswordToken;
+    private String usernameConfirmationToken;
 
-    private Date recoveryPasswordTokenExpiration;
+    private Date usernameConfirmationTokenExpiration;
+
+    private String recoveryPasswordToken = null;
+
+    private Date recoveryPasswordTokenExpiration = null;
 
     private Date creationDate;
 
