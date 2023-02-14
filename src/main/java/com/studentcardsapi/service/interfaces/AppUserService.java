@@ -11,9 +11,9 @@ public interface AppUserService extends UserDetailsService {
 
     AppUser getUser(Long id);
 
-    AppUser registerUser(UserRegistrationDTO userRegistrationDTO);
+    String registerUser(UserRegistrationDTO userRegistrationDTO) throws ClassNotFoundException, InstantiationException, IllegalAccessException;
 
     AppUser confirmUsername(String activationToken);
 
-    void generateActivationToken(AppUser appUser);
+    String generateActivationToken(String appUser);
 }
