@@ -9,6 +9,7 @@ import com.studentcardsapi.exception.ApiRequestException;
 import com.studentcardsapi.model.user.AppUser;
 import com.studentcardsapi.service.interfaces.AppUserService;
 import com.studentcardsapi.service.interfaces.TokenManagerService;
+import com.studentcardsapi.utils.UserIdentifier;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.Authentication;
@@ -23,7 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.studentcardsapi.utils.TokenConstants.*;
+import static com.studentcardsapi.utils.constants.TokenConstants.*;
+import static com.studentcardsapi.utils.messages.ErrorMessages.MISSING_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -32,8 +34,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Getter
 @AllArgsConstructor
 public class TokenManagerServiceImpl implements TokenManagerService {
-
-    private static final String MISSING_TOKEN = "the token for this request is missing or it is incomplete";
 
     AppUserService appUserService;
 
@@ -102,7 +102,7 @@ public class TokenManagerServiceImpl implements TokenManagerService {
                         .withSubject(user.getUsername())
                         .withExpiresAt(new Date(System.currentTimeMillis() + MINUTES_FOR_TOKEN_EXPIRATION * 60 * 1000))
                         .withIssuer(request.getRequestURI())
-                        .withClaim("userRole", user.getUserRole().toString())
+                        .withClaim("userRole", new UserIdentifier(user.getClass()).getUserClassEnumString())
                         .sign(algorithm);
 
                 Map<String, String> tokens = new HashMap<>();
