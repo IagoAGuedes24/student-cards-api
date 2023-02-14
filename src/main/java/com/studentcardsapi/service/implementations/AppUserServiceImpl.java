@@ -7,6 +7,7 @@ import com.studentcardsapi.model.user.AppUser;
 import com.studentcardsapi.repository.AppUserRepository;
 import com.studentcardsapi.service.interfaces.AppUserService;
 import com.studentcardsapi.service.interfaces.EmailService;
+import com.studentcardsapi.utils.UserIdentifier;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,9 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.UUID;
-
-import static com.studentcardsapi.utils.BusinessRulesConstants.MINUTES_FOR_USERNAME_CONFIRMATION_EXPIRATION;
-import static com.studentcardsapi.utils.ErrorMessages.*;
+import static com.studentcardsapi.utils.constants.BusinessRulesConstants.MINUTES_FOR_USERNAME_CONFIRMATION_EXPIRATION;
+import static com.studentcardsapi.utils.messages.ErrorMessages.*;
 
 @Service
 @Transactional
@@ -37,8 +37,6 @@ public class AppUserServiceImpl  implements AppUserService {
     private EmailService emailService;
 
     public AppUser saveAppUser(AppUser appUser) {
-        appUser = appUser.getUserRole().instantiante(appUser);
-        // TODO OBSERVAR COMO A DATABASE REAGE A ESSE SAVE
         this.appUserRepository.save(appUser);
         return appUser;
     }
@@ -46,39 +44,36 @@ public class AppUserServiceImpl  implements AppUserService {
     public AppUser getUser(String username) {
         return this.appUserRepository
                 .findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
+                .orElseThrow(() -> new ApiRequestException(USER_NOT_FOUND));
     }
 
-    public AppUser getUser(String username, boolean enabled) {
+    public AppUser getEnabledUser(String username) {
         return this.appUserRepository
-                .findByUsernameAndEnabled(username, enabled)
-                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
+                .findEnabledByUsername(username)
+                .orElseThrow(() -> new ApiRequestException(INVALID_OR_NOT_ENABLED_USERNAME));
     }
 
     @Override
     public AppUser getUser(Long id) {
         return this.appUserRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
+                .orElseThrow(() -> new ApiRequestException(USER_NOT_FOUND));
     }
 
-    public AppUser getUser(Long id, boolean enabled) {
-        return this.appUserRepository.findByIdAndEnabled(id, enabled)
-                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
-    }
 
     @Override
-    public AppUser registerUser(UserRegistrationDTO userRegistrationDTO) {
+    public String registerUser(UserRegistrationDTO userRegistrationDTO) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 
         checkUsername(userRegistrationDTO.getUsername());
         checkCpf(userRegistrationDTO.getCpf());
-        AppUser appUser = new AppUser();
-        appUser = this.modelMapper.map(userRegistrationDTO, AppUser.class);
+
+        UserIdentifier userIdentifier = new UserIdentifier(userRegistrationDTO.getUserRole());
+        AppUser appUser = userIdentifier.instantiate();
+        appUser = (AppUser) this.modelMapper.map(userRegistrationDTO, userIdentifier.getAppUserClass());
         setDefaultValues(appUser);
+        this.saveAppUser(appUser);
 
-        this.emailService.sendUsernameConfirmation(appUser.getUsername(), appUser.getUsernameConfirmationToken());
-        // TODO REVISAR UTILIZAÇÃO DE GETS COM BASE EM ENABLED
+        return this.emailService.sendUsernameConfirmation(appUser.getUsername(), appUser.getUsernameConfirmationToken());
 
-        return this.saveAppUser(appUser);
     }
 
     @Override
@@ -97,7 +92,6 @@ public class AppUserServiceImpl  implements AppUserService {
 
     private void checkCpf(String cpf) {
 
-        // considera-se erro CPF's formados por uma sequencia de numeros iguais
         if (cpf.equals("00000000000") ||
                 cpf.equals("11111111111") ||
                 cpf.equals("22222222222") || cpf.equals("33333333333") ||
@@ -110,15 +104,10 @@ public class AppUserServiceImpl  implements AppUserService {
         char dig10, dig11;
         int sm, i, r, num, peso;
 
-        // "try" - protege o codigo para eventuais erros de conversao de tipo (int)
         try {
-            // Calculo do 1o. Digito Verificador
             sm = 0;
             peso = 10;
             for (i=0; i<9; i++) {
-                // converte o i-esimo caractere do CPF em um numero:
-                // por exemplo, transforma o caractere '0' no inteiro 0
-                // (48 eh a posicao de '0' na tabela ASCII)
                 num = (int)(cpf.charAt(i) - 48);
                 sm = sm + (num * peso);
                 peso = peso - 1;
@@ -127,9 +116,8 @@ public class AppUserServiceImpl  implements AppUserService {
             r = 11 - (sm % 11);
             if ((r == 10) || (r == 11))
                 dig10 = '0';
-            else dig10 = (char)(r + 48); // converte no respectivo caractere numerico
+            else dig10 = (char)(r + 48);
 
-            // Calculo do 2o. Digito Verificador
             sm = 0;
             peso = 11;
             for(i=0; i<10; i++) {
@@ -143,7 +131,6 @@ public class AppUserServiceImpl  implements AppUserService {
                 dig11 = '0';
             else dig11 = (char)(r + 48);
 
-            // Verifica se os digitos calculados conferem com os digitos informados.
             if (!(dig10 == cpf.charAt(9)) && (dig11 == cpf.charAt(10)))
                 throw new ApiRequestException(INVALID_CPF);
         } catch (InputMismatchException erro) {
@@ -160,11 +147,18 @@ public class AppUserServiceImpl  implements AppUserService {
         generateActivationToken(appUser);
     }
 
-    public void generateActivationToken(AppUser appUser) {
+    public AppUser generateActivationToken(AppUser appUser) {
         if (appUser.isEnabled())
             throw new ApiRequestException(USER_ALREADY_ENABLED);
         appUser.setUsernameConfirmationToken(UUID.randomUUID().toString());
         appUser.setUsernameConfirmationTokenExpiration(new Date(System.currentTimeMillis() + MINUTES_FOR_USERNAME_CONFIRMATION_EXPIRATION * 60 * 1000));
+        return appUser;
+    }
+
+    public String generateActivationToken(String username) {
+        AppUser appUser = generateActivationToken(this.getUser(username));
+        this.saveAppUser(appUser); // FIXME 403 (?)
+        return this.emailService.sendUsernameConfirmation(username, appUser.getUsernameConfirmationToken());
     }
 
     private void checkUsername(String username) {

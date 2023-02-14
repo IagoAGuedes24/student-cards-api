@@ -15,10 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.studentcardsapi.utils.ConstantEndpoints.USERNAME_CONFIRMATION_ENDPOINT;
+import static com.studentcardsapi.utils.constants.EndpointConstants.*;
 
 @RestController
-@RequestMapping(path = "/api/usuario")
+@RequestMapping(path = API + USER)
 @AllArgsConstructor
 public class AppUserController {
 
@@ -28,30 +28,22 @@ public class AppUserController {
 
     TokenManagerService tokenDecoder;
 
-    @PostMapping("/cadastro")
-    public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
+    @PostMapping(CADASTER)
+    public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 
-        AppUser appUser = this.appUserService.registerUser(userRegistrationDTO);
-        UserDTO userDTO = this.modelMapper.map(appUser, UserDTO.class);
-
-        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(this.appUserService.registerUser(userRegistrationDTO), HttpStatus.CREATED);
     }
 
-    @GetMapping(USERNAME_CONFIRMATION_ENDPOINT + "/{activationToken}")
+    @GetMapping(USERNAME_CONFIRMATION + "/{activationToken}")
     public ResponseEntity<?> confirmUsername(@PathVariable("activationToken") String activationToken) {
         AppUser appUser = this.appUserService.confirmUsername(activationToken);
         UserDTO userDTO = this.modelMapper.map(appUser, UserDTO.class);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/gerar-novo-token")
-    public ResponseEntity<?> regenerateActivationToken(HttpServletRequest request) {
-        AppUser appUser = this.tokenDecoder.decodeAppUserToken(request);
-        this.appUserService.generateActivationToken(appUser);
-        this.appUserService.saveAppUser(appUser);
-        UserDTO userDTO = this.modelMapper.map(appUser, UserDTO.class);
-
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+    @GetMapping(GENERATE_NEW_USERNAME_ACTIVATION_TOKEN + "/{username}")
+    public ResponseEntity<?> regenerateActivationToken(@PathVariable("username") String username) {
+        return new ResponseEntity<>(this.appUserService.generateActivationToken(username), HttpStatus.OK);
     }
 
     @GetMapping("/{appUserId}")
@@ -59,7 +51,7 @@ public class AppUserController {
         return new ResponseEntity<>(modelMapper.map(appUserService.getUser(appUserId), UserDTO.class), HttpStatus.OK);
     }
 
-    @GetMapping("/token/refresh")
+    @GetMapping(REFRESH_TOKEN)
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         this.tokenDecoder.refreshToken(request, response);
     }
