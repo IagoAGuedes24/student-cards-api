@@ -25,4 +25,4 @@ Student Cards is a Spring Boot Back-end API that aims to facilitate the contact 
 If you want to see the API documentation on Heroku, check out by clicking [here]()
 
 ## User Stories and planning aspects
-If you want to see User stories and planning aspects, check out by clicking [here]()
+If you want to see User stories and planning aspects (portuguese only), check out by clicking [here](). As we used Trello for the project management, we can only give "view only" access if we pay for and update. Knowing that, we ask for you to only view the process, and not edit anything that is already there.
