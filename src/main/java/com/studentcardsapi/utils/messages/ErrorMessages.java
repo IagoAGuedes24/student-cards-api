@@ -1,4 +1,4 @@
-package com.studentcardsapi.utils;
+package com.studentcardsapi.utils.messages;
 
 public class ErrorMessages {
 
@@ -16,4 +16,10 @@ public class ErrorMessages {
     public static final String EXPIRATED_TOKEN = "O link informado já expirou, solicite novo link de ativação de conta.";
 
     public static final String USER_ALREADY_ENABLED = "O usuário já está autenticado no sistema";
+
+    public static final String INVALID_OR_NOT_ENABLED_USERNAME = "O usuário informado não existe ou não está autenticado no sistema";
+
+    public static final String NULL_APP_USER_CLASS = "Primeiro informe o enum para a classe identificadora antes de instanciar";
+
+    public static final String MISSING_TOKEN = "the token for this request is missing or it is incomplete";
 }

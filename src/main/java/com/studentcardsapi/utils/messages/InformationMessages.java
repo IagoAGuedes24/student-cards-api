@@ -1,4 +1,4 @@
-package com.studentcardsapi.utils;
+package com.studentcardsapi.utils.messages;
 
 public class InformationMessages {
 
