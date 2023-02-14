@@ -1,12 +1,12 @@
 package com.studentcardsapi.repository;
 
-import com.studentcardsapi.enums.AppUserRole;
 import com.studentcardsapi.model.user.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.Optional;
 
 @Repository
@@ -14,16 +14,16 @@ public interface AppUserRepository<T extends AppUser> extends JpaRepository<T, L
 
     Optional<T> findByUsername(String username);
 
-    Optional<T> findByUsernameAndEnabled(String username, boolean enabled);
-
-    Optional<T> findByUsernameConfirmationToken(String activationToken);
+    @Query(
+            value = "SELECT * FROM app_user WHERE enabled = true AND username = ?1",
+            nativeQuery = true
+    )
+    Optional<T> findEnabledByUsername(String username);
 
     Optional<T> findByCpf(String cpf);
 
     Optional<T> findById(Long id);
 
-    Optional<T> findByIdAndEnabled(Long id, boolean enabled);
-
-    Collection<T> findAllByUserRole(AppUserRole userRole);
+    Optional<T> findByUsernameConfirmationToken(String usernameConfirmationToken);
 
 }
