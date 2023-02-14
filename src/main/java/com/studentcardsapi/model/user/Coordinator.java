@@ -10,5 +10,6 @@ import javax.persistence.Entity;
 @Entity
 @NoArgsConstructor
 @Data
-public class Coordinator  extends AppUser{
+public class Coordinator  extends AppUser {
+
 }

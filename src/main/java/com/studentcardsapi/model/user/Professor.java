@@ -10,5 +10,4 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @Data
 public class Professor extends AppUser {
-
 }

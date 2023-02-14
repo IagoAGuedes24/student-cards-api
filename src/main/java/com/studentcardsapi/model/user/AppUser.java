@@ -2,11 +2,11 @@ package com.studentcardsapi.model.user;
 
 import com.studentcardsapi.enums.AppUserRole;
 import com.studentcardsapi.model.GenericModel;
+import com.studentcardsapi.utils.UserIdentifier;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,9 +20,10 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Inheritance(strategy =  InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class AppUser extends GenericModel implements UserDetails {
+@Access(AccessType.FIELD)
+ public class AppUser extends GenericModel implements UserDetails {
 
     private String name;
 
@@ -38,9 +39,6 @@ public class AppUser extends GenericModel implements UserDetails {
 
     private Boolean enabled = false;
 
-    @Enumerated(EnumType.STRING)
-    private AppUserRole userRole;
-
     private String usernameConfirmationToken;
 
     private Date usernameConfirmationTokenExpiration;
@@ -52,9 +50,10 @@ public class AppUser extends GenericModel implements UserDetails {
     private Date creationDate;
 
     @Override
-
+    @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(getClass().getName().toUpperCase());
+        SimpleGrantedAuthority authority = null;
+        authority = new SimpleGrantedAuthority(new UserIdentifier(this.getClass()).getUserClassEnumString());
         return Collections.singletonList(authority);
     }
     @Override

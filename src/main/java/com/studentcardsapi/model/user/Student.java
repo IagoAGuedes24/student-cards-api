@@ -15,6 +15,4 @@ public class Student extends AppUser {
 
     @OneToOne
     Assistant assistant;
-
-
 }
