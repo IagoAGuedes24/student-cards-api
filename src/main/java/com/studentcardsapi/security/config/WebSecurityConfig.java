@@ -23,7 +23,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-import static com.studentcardsapi.utils.TokenConstants.*;
+import static com.studentcardsapi.utils.constants.EndpointConstants.API;
+import static com.studentcardsapi.utils.constants.EndpointConstants.LOGIN;
+import static com.studentcardsapi.utils.constants.TokenConstants.*;
 
 @Configuration
 @AllArgsConstructor
@@ -39,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(), tokenManagerService);
-        customAuthenticationFilter.setFilterProcessesUrl("/api/login");
+        customAuthenticationFilter.setFilterProcessesUrl(API + LOGIN);
 
         http.cors().and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -50,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers(NO_TOKEN_ENDPOINTS.toArray(new String[0])).permitAll();
 
-        // http.authorizeRequests().antMatchers(GET, "/api/publicacao/analise" + PERMIT_ALL_AFTER).hasAnyAuthority(UserRole.ADMINISTRADOR.name());
+//        http.authorizeRequests().antMatchers(GET, "/api/publicacao/analise" + PERMIT_ALL_AFTER).hasAnyAuthority(AppUserRole.COORDINATOR.name());
 
         http.authorizeRequests().anyRequest().authenticated();
 
