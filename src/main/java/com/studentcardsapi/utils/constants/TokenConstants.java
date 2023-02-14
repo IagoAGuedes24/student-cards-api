@@ -1,4 +1,4 @@
-package com.studentcardsapi.utils;
+package com.studentcardsapi.utils.constants;
 
 
 import java.util.ArrayList;
@@ -6,16 +6,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.studentcardsapi.utils.ConstantEndpoints.USERNAME_CONFIRMATION_ENDPOINT;
+import static com.studentcardsapi.utils.constants.EndpointConstants.*;
 
 public class TokenConstants {
 
     public static final List<String> NO_TOKEN_ENDPOINTS = Collections.unmodifiableList(new ArrayList<>(Arrays.asList("/api/login",
-            "/api/usuario/cadastro",
-            "/api/usuario/token/refresh",
-            "/api/senha/esqueci-senha",
-            "/api/senha/trocar-senha/**",
-            USERNAME_CONFIRMATION_ENDPOINT + "/**"
+            API + USER + CADASTER,
+            API + USER + REFRESH_TOKEN,
+            API + USER + FORGOT_PASSWORD,
+            API + USER + SWITCH_PASSWORD + ALL_AFTER,
+            API + USER + USERNAME_CONFIRMATION + ALL_AFTER,
+            API + USER + GENERATE_NEW_USERNAME_ACTIVATION_TOKEN + ALL_AFTER,
+            API + LOGIN
             )
     ));
 
@@ -23,7 +25,7 @@ public class TokenConstants {
 
     public static final String SECRET_WORD_FOR_TOKEN_GENERATION = System.getenv("SECRET_WORD_FOR_TOKEN_GENERATION");
 
-    public static final int MINUTES_FOR_TOKEN_EXPIRATION = 20000;
+    public static final int MINUTES_FOR_TOKEN_EXPIRATION = 30;
 
     public static final String PERMIT_ALL_AFTER = "/**";
 
