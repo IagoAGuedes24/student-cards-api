@@ -7,6 +7,7 @@ Student Cards is a Spring Boot Back-end API that aims to facilitate the contact 
 - [Technologies used](#technologies-used)
 - [Endpoints documentation](#endpoints-documentation)
 - [User Stories and planning aspects](#user-stories-and-planning-aspects)
+- [Object Modeling](#object-modeling)
 
 ## Technologies Used
 - [CircleCI](https://circleci.com/)
@@ -25,4 +26,9 @@ Student Cards is a Spring Boot Back-end API that aims to facilitate the contact 
 If you want to see the API documentation on Heroku, check out by clicking [here]()
 
 ## User Stories and planning aspects
-If you want to see User stories and planning aspects, check out by clicking [here]()
+If you want to see User stories and planning aspects (portuguese only), check out by clicking [here](). As we used Trello for the project management, we can only give "view only" access if we pay for and upgrade. Knowing that, we ask for you to only view the process, and not edit anything that is already there.
+
+## Object Modeling
+![Student Cards](https://user-images.githubusercontent.com/62118039/218900831-974be64b-4ee4-4df3-aa5d-82a2e287fa06.png)
+
+
