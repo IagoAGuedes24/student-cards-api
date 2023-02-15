@@ -148,8 +148,9 @@ public class AppUserServiceImpl  implements AppUserService {
     }
 
     public AppUser generateActivationToken(AppUser appUser) {
-        if (appUser.isEnabled())
+        if (appUser.isEnabled()) {
             throw new ApiRequestException(USER_ALREADY_ENABLED);
+        }
         appUser.setUsernameConfirmationToken(UUID.randomUUID().toString());
         appUser.setUsernameConfirmationTokenExpiration(new Date(System.currentTimeMillis() + MINUTES_FOR_USERNAME_CONFIRMATION_EXPIRATION * 60 * 1000));
         return appUser;

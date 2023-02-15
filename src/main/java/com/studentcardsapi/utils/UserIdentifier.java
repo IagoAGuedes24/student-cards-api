@@ -44,6 +44,10 @@ public class UserIdentifier {
     }
 
     public  String getUserClassEnumString() {
+        if (this.appUserClass == null) {
+            throw new ApiRequestException(NULL_APP_USER_CLASS);
+        }
+
         return this.appUserClass.toString()
                 .replace("class " + USERS_PATH + ".", "")
                 .toUpperCase();
