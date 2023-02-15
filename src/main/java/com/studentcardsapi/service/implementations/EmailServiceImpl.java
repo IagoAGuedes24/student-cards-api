@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import static com.studentcardsapi.utils.constants.EndpointConstants.DEFAULT_DOMAIN;
 import static com.studentcardsapi.utils.constants.EndpointConstants.USERNAME_CONFIRMATION;
+import static com.studentcardsapi.utils.constants.EndpointConstants.*;
 import static com.studentcardsapi.utils.messages.ErrorMessages.GENERIC_ERROR;
 import static com.studentcardsapi.utils.messages.InformationMessages.ACTIVATION_EMAIL_SENT;
 
@@ -42,6 +43,8 @@ public class EmailServiceImpl implements EmailService {
                 "Link de ativação de conta",
                 "Seu link para ativação de sua conta Student Cards é \n"
                         + DEFAULT_DOMAIN
+                        + API
+                        + USER
                         + USERNAME_CONFIRMATION + "/"
                         + activationToken
         );
