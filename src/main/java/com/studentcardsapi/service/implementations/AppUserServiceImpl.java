@@ -9,8 +9,10 @@ import com.studentcardsapi.service.interfaces.AppUserService;
 import com.studentcardsapi.service.interfaces.EmailService;
 import com.studentcardsapi.utils.UserIdentifier;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.mail.internet.InternetAddress;
@@ -26,7 +28,8 @@ import static com.studentcardsapi.utils.messages.ErrorMessages.*;
 @Service
 @Transactional
 @AllArgsConstructor
-public class AppUserServiceImpl  implements AppUserService {
+@Slf4j
+public class AppUserServiceImpl  implements AppUserService, UserDetailsService {
 
     private AppUserRepository<AppUser> appUserRepository;
 
@@ -38,25 +41,33 @@ public class AppUserServiceImpl  implements AppUserService {
 
     public AppUser saveAppUser(AppUser appUser) {
         this.appUserRepository.save(appUser);
+        log.info("successfully saved user " + appUser.getUsername() + ", which is from " + appUser.getClass().toString());
         return appUser;
     }
 
     public AppUser getUser(String username) {
-        return this.appUserRepository
-                .findByUsername(username)
-                .orElseThrow(() -> new ApiRequestException(USER_NOT_FOUND));
+        AppUser appUser = this.appUserRepository
+                .findEnabledByUsername(username)
+                .orElseThrow(() -> new ApiRequestException(INVALID_OR_NOT_ENABLED_USERNAME));
+        log.info("found user " + appUser.getUsername() + "based on username");
+        return appUser;
     }
 
     public AppUser getEnabledUser(String username) {
-        return this.appUserRepository
+        AppUser appUser = this.appUserRepository
                 .findEnabledByUsername(username)
                 .orElseThrow(() -> new ApiRequestException(INVALID_OR_NOT_ENABLED_USERNAME));
+        log.info("found user " + appUser.getUsername() + "based on username");
+        return appUser;
     }
 
     @Override
     public AppUser getUser(Long id) {
-        return this.appUserRepository.findById(id)
-                .orElseThrow(() -> new ApiRequestException(USER_NOT_FOUND));
+        AppUser appUser = this.appUserRepository
+                .findById(id)
+                .orElseThrow(() -> new ApiRequestException(INVALID_OR_NOT_ENABLED_USERNAME));
+        log.info("found user " + appUser.getUsername() + "based on id");
+        return appUser;
     }
 
 
@@ -80,12 +91,16 @@ public class AppUserServiceImpl  implements AppUserService {
     public AppUser confirmUsername(String activationToken) {
         AppUser appUser = this.appUserRepository.findByUsernameConfirmationToken(activationToken)
                 .orElseThrow(() -> new ApiRequestException(INVALID_TOKEN));
+        log.info("found activation token of " + appUser.getUsername() + "on database");
         if (appUser.getUsernameConfirmationTokenExpiration().before(new Date(System.currentTimeMillis())))
             throw new ApiRequestException(EXPIRATED_TOKEN);
+        log.info("token of " + appUser.getUsername() + " is not expired");
         if (appUser.isEnabled())
             throw new ApiRequestException(USER_ALREADY_ENABLED);
+        log.info("user " + appUser.getUsername() + " is still not enabled");
 
         appUser.setEnabled(true);
+        log.info("user " + appUser.getUsername() + "was set to enabled");
         return appUser;
     }
 
@@ -139,12 +154,15 @@ public class AppUserServiceImpl  implements AppUserService {
 
         if (this.appUserRepository.findByCpf(cpf).isPresent())
             throw new ApiRequestException(CPF_ALREADY_EXISTS);
+
+        log.info("cpf " + cpf + " is valid");
     }
 
     private void setDefaultValues(AppUser appUser) {
         appUser.setCreationDate(new Date(System.currentTimeMillis()));
         appUser.setPassword(bCryptPasswordEncoder.encode(appUser.getCpf()));
         generateActivationToken(appUser);
+        log.info("setted default values to user " + appUser.getUsername());
     }
 
     public AppUser generateActivationToken(AppUser appUser) {
@@ -153,12 +171,14 @@ public class AppUserServiceImpl  implements AppUserService {
         }
         appUser.setUsernameConfirmationToken(UUID.randomUUID().toString());
         appUser.setUsernameConfirmationTokenExpiration(new Date(System.currentTimeMillis() + MINUTES_FOR_USERNAME_CONFIRMATION_EXPIRATION * 60 * 1000));
+        log.info("generated activation token of user " + appUser.getUsername() + "with expiration on " + MINUTES_FOR_USERNAME_CONFIRMATION_EXPIRATION);
         return appUser;
     }
 
     public String generateActivationToken(String username) {
         AppUser appUser = generateActivationToken(this.getUser(username));
-        this.saveAppUser(appUser); // FIXME 403 (?)
+        log.info("found user " + username + "and a new username activation token was sent");
+        this.saveAppUser(appUser);
         return this.emailService.sendUsernameConfirmation(username, appUser.getUsernameConfirmationToken());
     }
 
@@ -172,6 +192,7 @@ public class AppUserServiceImpl  implements AppUserService {
 
         if (this.appUserRepository.findByUsername(username).isPresent())
             throw new ApiRequestException(USERNAME_ALREADY_EXISTS);
+        log.info("username " + username + " is valid");
     }
 
     private void checkPasswordConfirmation(String password, String passwordConfirmation) {
