@@ -3,6 +3,7 @@ package com.studentcardsapi.service.implementations;
 import com.studentcardsapi.exception.ApiRequestException;
 import com.studentcardsapi.service.interfaces.EmailService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import static com.studentcardsapi.utils.messages.InformationMessages.ACTIVATION_
 @Component
 @AllArgsConstructor
 @Service
+@Slf4j
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender emailSender;
@@ -48,6 +50,7 @@ public class EmailServiceImpl implements EmailService {
                         + USERNAME_CONFIRMATION + "/"
                         + activationToken
         );
+        log.info("the username e-mail confirmation was sent to user " + username);
         return ACTIVATION_EMAIL_SENT;
     }
 }

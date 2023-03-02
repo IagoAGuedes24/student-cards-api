@@ -5,12 +5,14 @@ import com.studentcardsapi.exception.ApiRequestException;
 import com.studentcardsapi.model.user.AppUser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import static com.studentcardsapi.utils.constants.BusinessRulesConstants.USERS_PATH;
 import static com.studentcardsapi.utils.messages.ErrorMessages.NULL_APP_USER_CLASS;
 
 @NoArgsConstructor
 @Getter
+@Slf4j
 public class UserIdentifier {
 
     private Class appUserClass;
@@ -40,6 +42,7 @@ public class UserIdentifier {
             throw new ApiRequestException(NULL_APP_USER_CLASS);
         }
 
+        log.info("instantiating user with class " + this.appUserClass.toString());
         return (AppUser) this.appUserClass.newInstance();
     }
 
