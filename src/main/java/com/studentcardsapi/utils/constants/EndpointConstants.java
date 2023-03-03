@@ -21,4 +21,6 @@ public class EndpointConstants {
 
     public static final String GENERATE_NEW_USERNAME_ACTIVATION_TOKEN = "/gerar-novo-token";
 
+    public static final String COORDINATOR = "/coordenador";
+
 }

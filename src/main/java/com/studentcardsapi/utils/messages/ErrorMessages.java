@@ -22,4 +22,6 @@ public class ErrorMessages {
     public static final String NULL_APP_USER_CLASS = "Primeiro informe o enum para a classe identificadora antes de instanciar";
 
     public static final String MISSING_TOKEN = "the token for this request is missing or it is incomplete";
+
+    public static final String SUBJECT_ALREADY_EXISTS = "the subject already exists at this year";
 }
