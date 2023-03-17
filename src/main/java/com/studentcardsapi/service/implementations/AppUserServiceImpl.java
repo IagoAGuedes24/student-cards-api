@@ -48,7 +48,7 @@ public class AppUserServiceImpl  implements AppUserService, UserDetailsService {
     public AppUser getUser(String username) {
         AppUser appUser = this.appUserRepository
                 .findByUsername(username)
-                .orElseThrow(() -> new ApiRequestException(USER_DOES_NOT_EXIST));
+                .orElseThrow(() -> new UsernameNotFoundException(USER_DOES_NOT_EXIST));
         log.info("found user " + appUser.getUsername() + "based on username");
         return appUser;
     }
