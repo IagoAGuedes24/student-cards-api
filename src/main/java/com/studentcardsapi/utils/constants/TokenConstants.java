@@ -18,8 +18,7 @@ public class TokenConstants {
             API + USER + USERNAME_CONFIRMATION + ALL_AFTER,
             API + USER + GENERATE_NEW_USERNAME_ACTIVATION_TOKEN + ALL_AFTER,
             API + LOGIN
-            )
-    ));
+    )));
 
     public static final String BEARER = "Bearer ";
 

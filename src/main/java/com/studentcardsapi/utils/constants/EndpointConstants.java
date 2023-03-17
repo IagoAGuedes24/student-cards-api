@@ -11,6 +11,8 @@ public class EndpointConstants {
 
     public static final String CADASTER = "/cadastro";
 
+    public static final String SUBJECT_CREATION = "/subject/create";
+
     public static final String LOGIN = "/login";
 
     public static final String REFRESH_TOKEN = "/token/refresh";
@@ -20,5 +22,7 @@ public class EndpointConstants {
     public static final String SWITCH_PASSWORD = "/trocar-senha";
 
     public static final String GENERATE_NEW_USERNAME_ACTIVATION_TOKEN = "/gerar-novo-token";
+
+    public static final String COORDINATOR = "/coordenador";
 
 }

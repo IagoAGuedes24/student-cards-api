@@ -47,8 +47,8 @@ public class AppUserServiceImpl  implements AppUserService, UserDetailsService {
 
     public AppUser getUser(String username) {
         AppUser appUser = this.appUserRepository
-                .findEnabledByUsername(username)
-                .orElseThrow(() -> new ApiRequestException(INVALID_OR_NOT_ENABLED_USERNAME));
+                .findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(USER_DOES_NOT_EXIST));
         log.info("found user " + appUser.getUsername() + "based on username");
         return appUser;
     }
@@ -65,7 +65,7 @@ public class AppUserServiceImpl  implements AppUserService, UserDetailsService {
     public AppUser getUser(Long id) {
         AppUser appUser = this.appUserRepository
                 .findById(id)
-                .orElseThrow(() -> new ApiRequestException(INVALID_OR_NOT_ENABLED_USERNAME));
+                .orElseThrow(() -> new ApiRequestException(USER_DOES_NOT_EXIST));
         log.info("found user " + appUser.getUsername() + "based on id");
         return appUser;
     }

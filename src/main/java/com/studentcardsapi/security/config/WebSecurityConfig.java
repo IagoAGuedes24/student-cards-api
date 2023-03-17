@@ -1,6 +1,7 @@
 package com.studentcardsapi.security.config;
 
 
+import com.studentcardsapi.enums.AppUserRole;
 import com.studentcardsapi.security.filter.CustomAuthenticationFilter;
 import com.studentcardsapi.security.filter.CustomAuthorizationFilter;
 import com.studentcardsapi.service.interfaces.AppUserService;
@@ -23,9 +24,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-import static com.studentcardsapi.utils.constants.EndpointConstants.API;
-import static com.studentcardsapi.utils.constants.EndpointConstants.LOGIN;
+import static com.studentcardsapi.utils.constants.EndpointConstants.*;
 import static com.studentcardsapi.utils.constants.TokenConstants.*;
+import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 @AllArgsConstructor
@@ -52,7 +53,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers(NO_TOKEN_ENDPOINTS.toArray(new String[0])).permitAll();
 
-//        http.authorizeRequests().antMatchers(GET, "/api/publicacao/analise" + PERMIT_ALL_AFTER).hasAnyAuthority(AppUserRole.COORDINATOR.name());
+//      We need to look after this part of the http configuration. Take care!
+        http.authorizeRequests().antMatchers(POST, SUBJECT_CREATION).hasAnyAuthority(AppUserRole.COORDINATOR.name());
 
         http.authorizeRequests().anyRequest().authenticated();
 
