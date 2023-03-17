@@ -26,7 +26,7 @@ public class SubjectServiceImpl implements SubjectService {
     public Subject createSubject(SubjectRegistrationDTO subjectRegistrationDTO) {
 
         log.info("SubjectService.createSubject() is being executed");
-        if(this.subjectRepository.findByNameAndYear(subjectRegistrationDTO.getName(),subjectRegistrationDTO.getYear().name()).isPresent()){
+        if(this.subjectRepository.findByNameAndYear(subjectRegistrationDTO.getName(), subjectRegistrationDTO.getYear()).isPresent()){
             throw new ApiRequestException(SUBJECT_ALREADY_EXISTS);
         }
 
