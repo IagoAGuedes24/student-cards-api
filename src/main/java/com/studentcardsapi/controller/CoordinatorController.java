@@ -23,7 +23,7 @@ public class CoordinatorController {
 
     SubjectService subjectService;
 
-    @PostMapping("/subject/create")
+    @PostMapping(SUBJECT_CREATION)
     public ResponseEntity<?> createsSubject(@RequestBody SubjectRegistrationDTO subjectRegistrationDTO){
         log.info("Starting Creation of subject " + subjectRegistrationDTO.getName());
         Subject subject = this.subjectService.createSubject(subjectRegistrationDTO);
