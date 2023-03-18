@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,12 +40,10 @@ public class TokenManagerServiceImpl implements TokenManagerService {
 
 
     @Override
-    public AppUser decodeToken(String token, Algorithm algorithm) {
-        JWTVerifier verifier = JWT.require(algorithm).build();
-        DecodedJWT decodedJWT = verifier.verify(token);
-        String username = decodedJWT.getSubject();
-
-        return appUserService.getUser(username);
+    public AppUser getCurrentUser(String token, Algorithm algorithm) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        return this.appUserService.getUser(currentPrincipalName);
     }
 
     @Override
@@ -77,7 +76,7 @@ public class TokenManagerServiceImpl implements TokenManagerService {
             try {
                 Algorithm algorithm = Algorithm.HMAC256(SECRET_WORD_FOR_TOKEN_GENERATION.getBytes());
                 String token = authorizationHeader.substring(BEARER.length());
-                return decodeToken(token, algorithm);
+                return getCurrentUser(token, algorithm);
 
             } catch (Exception e) {
                 throw new ApiRequestException(e.getMessage());
@@ -96,7 +95,7 @@ public class TokenManagerServiceImpl implements TokenManagerService {
             try {
                 String refreshToken = authorizationHeader.substring(BEARER.length());
                 Algorithm algorithm = Algorithm.HMAC256(SECRET_WORD_FOR_TOKEN_GENERATION.getBytes());
-                AppUser user = decodeToken(refreshToken, algorithm);
+                AppUser user = getCurrentUser(refreshToken, algorithm);
 
                 String accessToken = JWT.create()
                         .withSubject(user.getUsername())

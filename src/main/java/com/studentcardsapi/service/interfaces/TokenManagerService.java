@@ -18,6 +18,6 @@ public interface TokenManagerService {
 
     void tokenDecodeError(Exception e, HttpServletResponse response) throws IOException;
 
-    AppUser decodeToken(String token, Algorithm algorithm);
+    AppUser getCurrentUser(String token, Algorithm algorithm);
 
 }
