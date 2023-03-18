@@ -4,6 +4,6 @@ import static com.studentcardsapi.utils.constants.BusinessRulesConstants.MINUTES
 
 public class InformationMessages {
 
-    public static final String ACTIVATION_EMAIL_SENT = "Você recebeu um e-mail para ativar sua conta que expirará em " + MINUTES_FOR_USERNAME_CONFIRMATION_EXPIRATION + " minutos.";
+    public static final String ACTIVATION_EMAIL_SENT = "You have received a link via e-mail for your account activation. Please, be aware that this  link will expire in " + MINUTES_FOR_USERNAME_CONFIRMATION_EXPIRATION + " minutes.";
 
 }

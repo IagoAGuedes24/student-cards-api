@@ -2,25 +2,24 @@ package com.studentcardsapi.utils.messages;
 
 public class ErrorMessages {
 
-    public static final String GENERIC_ERROR = "Algo deu errado, tente novamente.";
+    public static final String GENERIC_ERROR = "Something went wrong, please try again.";
 
-    public static final String USER_DOES_NOT_EXIST = "O usuário infrmado não existe no sistema";
-    public static final String UNMATCHED_PASSWORDS = "A senha e a confirmação de senha não são iguais";
-    public static final String USERNAME_ALREADY_EXISTS = "O e-mail informado já existe no sistema";
-    public static final String INVALID_USERNAME = "O e-mail informado não está no formato adequado";
-    public static final String INVALID_CPF = "O CPF informado não está no formato adequado";
+    public static final String USER_DOES_NOT_EXIST = "This user does not exist yet.";
+    public static final String UNMATCHED_PASSWORDS = "The password does not match with the password confirmation";
+    public static final String USERNAME_ALREADY_EXISTS = "This e-mail already exists";
+    public static final String INVALID_USERNAME = "This e-mail has an invalid format.";
+    public static final String INVALID_CPF = "This CPF has an invalid format.";
 
-    public static final String CPF_ALREADY_EXISTS = "O CPF informado já existe no sistema";
+    public static final String CPF_ALREADY_EXISTS = "This CPF already exists.";
+    public static final String INVALID_TOKEN = "This link is invalid.";
 
-    public static final String INVALID_TOKEN = "O link informado está incorreto";
+    public static final String EXPIRATED_TOKEN = "This link is already expired, please request a new one.";
 
-    public static final String EXPIRATED_TOKEN = "O link informado já expirou, solicite novo link de ativação de conta.";
+    public static final String USER_ALREADY_ENABLED = "You are already enabled, please log in.";
 
-    public static final String USER_ALREADY_ENABLED = "O usuário já está autenticado no sistema";
+    public static final String INVALID_OR_NOT_ENABLED_USERNAME = "This user is not enabled or does not exist.";
 
-    public static final String INVALID_OR_NOT_ENABLED_USERNAME = "O usuário informado não existe ou não está autenticado no sistema";
-
-    public static final String NULL_APP_USER_CLASS = "Primeiro informe o enum para a classe identificadora antes de instanciar";
+    public static final String NULL_APP_USER_CLASS = "Inform the enum for the identifier class before instantiating";
 
     public static final String MISSING_TOKEN = "the token for this request is missing or it is incomplete";
 
