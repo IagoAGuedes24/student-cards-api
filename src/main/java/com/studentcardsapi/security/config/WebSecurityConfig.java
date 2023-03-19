@@ -54,7 +54,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(NO_TOKEN_ENDPOINTS.toArray(new String[0])).permitAll();
 
 //      We need to look after this part of the http configuration. Take care!
-        http.authorizeRequests().antMatchers(POST, SUBJECT_CREATION).hasAnyAuthority(AppUserRole.COORDINATOR.name());
+        http.authorizeRequests().antMatchers(POST, API + SUBJECT + CREATION).hasAnyAuthority(AppUserRole.COORDINATOR.name());
+        http.authorizeRequests().antMatchers(POST, API + SUBJECT + ALL_AFTER + LIST_ALL).hasAnyAuthority(
+                AppUserRole.COORDINATOR.name(),
+                AppUserRole.ASSISTANT.name(),
+                AppUserRole.STUDENT.name(),
+                AppUserRole.PROFESSOR.name()
+        );
 
         http.authorizeRequests().anyRequest().authenticated();
 
