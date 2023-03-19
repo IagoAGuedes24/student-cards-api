@@ -11,7 +11,7 @@ import static com.studentcardsapi.utils.constants.EndpointConstants.*;
 public class TokenConstants {
 
     public static final List<String> NO_TOKEN_ENDPOINTS = Collections.unmodifiableList(new ArrayList<>(Arrays.asList("/api/login",
-            API + USER + CADASTER,
+            API + USER + CREATION,
             API + USER + REFRESH_TOKEN,
             API + USER + FORGOT_PASSWORD,
             API + USER + SWITCH_PASSWORD + ALL_AFTER,
