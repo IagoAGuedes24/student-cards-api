@@ -9,9 +9,7 @@ public class EndpointConstants {
     public static final String USER = "/user";
     public  static final String USERNAME_CONFIRMATION = "/account-activation";
 
-    public static final String CADASTER = "/cadaster";
-
-    public static final String SUBJECT_CREATION = "/subject/create";
+    public static final String CREATION = "/create";
 
     public static final String LOGIN = "/login";
 
@@ -23,6 +21,8 @@ public class EndpointConstants {
 
     public static final String GENERATE_NEW_USERNAME_ACTIVATION_TOKEN = "/generate-new-token";
 
-    public static final String COORDINATOR = "/coordinator";
+    public static final String SUBJECT = "/subject";
+
+    public static final String LIST_ALL = "/list-all";
 
 }

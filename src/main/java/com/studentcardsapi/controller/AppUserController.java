@@ -30,14 +30,14 @@ public class AppUserController {
 
     TokenManagerService tokenDecoder;
 
-    @PostMapping(CADASTER)
+    @PostMapping(CREATION)
     public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         log.info("Starting Creation of user " + userRegistrationDTO.getUsername());
         return new ResponseEntity<>(this.appUserService.registerUser(userRegistrationDTO), HttpStatus.CREATED);
     }
 
     @GetMapping(USERNAME_CONFIRMATION + "/{activationToken}")
-    public ResponseEntity<?> confirmUsername(@PathVariable("activationToken") String activationToken) {
+    public ResponseEntity<?> confirmUsername(@PathVariable String activationToken) {
         log.info("Starting confirmation of activation token " + activationToken);
         AppUser appUser = this.appUserService.confirmUsername(activationToken);
         UserDTO userDTO = this.modelMapper.map(appUser, UserDTO.class);
@@ -45,13 +45,13 @@ public class AppUserController {
     }
 
     @GetMapping(GENERATE_NEW_USERNAME_ACTIVATION_TOKEN + "/{username}")
-    public ResponseEntity<?> regenerateActivationToken(@PathVariable("username") String username) {
+    public ResponseEntity<?> regenerateActivationToken(@PathVariable String username) {
         log.info("Starting  username activation token regeneration of user " + username);
         return new ResponseEntity<>(this.appUserService.generateActivationToken(username), HttpStatus.OK);
     }
 
     @GetMapping("/{appUserId}")
-    public ResponseEntity<?> getUserById(@PathVariable("appUserId") Long appUserId) {
+    public ResponseEntity<?> getUserById(@PathVariable Long appUserId) {
         return new ResponseEntity<>(modelMapper.map(appUserService.getUser(appUserId), UserDTO.class), HttpStatus.OK);
     }
 
