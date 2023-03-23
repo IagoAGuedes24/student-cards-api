@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class SubjectRegistrationDTO {
+public class SubjectDTO {
 
     private String name;
     private Year year;
