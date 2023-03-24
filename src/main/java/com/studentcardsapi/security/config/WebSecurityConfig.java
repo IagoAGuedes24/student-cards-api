@@ -26,6 +26,7 @@ import java.util.Arrays;
 
 import static com.studentcardsapi.utils.constants.EndpointConstants.*;
 import static com.studentcardsapi.utils.constants.TokenConstants.*;
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
@@ -55,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //      We need to look after this part of the http configuration. Take care!
         http.authorizeRequests().antMatchers(POST, API + SUBJECT + CREATION).hasAnyAuthority(AppUserRole.COORDINATOR.name());
-        http.authorizeRequests().antMatchers(POST, API + SUBJECT + ALL_AFTER + LIST_ALL).hasAnyAuthority(
+        http.authorizeRequests().antMatchers(GET, API + SUBJECT + ALL_AFTER + LIST_ALL).hasAnyAuthority(
                 AppUserRole.COORDINATOR.name(),
                 AppUserRole.ASSISTANT.name(),
                 AppUserRole.STUDENT.name(),
