@@ -56,7 +56,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //      We need to look after this part of the http configuration. Take care!
         http.authorizeRequests().antMatchers(POST, API + SUBJECT + CREATION).hasAnyAuthority(AppUserRole.COORDINATOR.name());
-        http.authorizeRequests().antMatchers(GET, API + SUBJECT + ALL_AFTER + LIST_ALL).hasAnyAuthority(
+        http.authorizeRequests().antMatchers(GET, API + SUBJECT + YEAR + LIST_ALL).hasAnyAuthority(
+                AppUserRole.COORDINATOR.name(),
+                AppUserRole.ASSISTANT.name(),
+                AppUserRole.STUDENT.name(),
+                AppUserRole.PROFESSOR.name()
+        );
+
+        http.authorizeRequests().antMatchers(GET, API + SUBJECT + ID).hasAnyAuthority(
                 AppUserRole.COORDINATOR.name(),
                 AppUserRole.ASSISTANT.name(),
                 AppUserRole.STUDENT.name(),
