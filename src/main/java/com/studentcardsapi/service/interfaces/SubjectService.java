@@ -10,4 +10,6 @@ public interface SubjectService {
     Subject createSubject(SubjectDTO subjectDTO);
 
     List<Subject> listAllSubjects(Year year);
+
+    Subject viewSubject(Long id);
 }

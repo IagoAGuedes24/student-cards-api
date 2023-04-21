@@ -15,4 +15,6 @@ public interface SubjectRepository extends JpaRepository<Subject,Long> {
     Optional<Subject> findByNameAndYear(String name, Year year);
 
     List<Subject> findAllByYear(Year year);
+
+
 }
