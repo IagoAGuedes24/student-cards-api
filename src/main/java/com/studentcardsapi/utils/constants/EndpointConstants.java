@@ -25,4 +25,8 @@ public class EndpointConstants {
 
     public static final String LIST_ALL = "/list-all";
 
+    public static final String ID = "/{id}";
+
+    public static final String YEAR = "/{year}";
+
 }
