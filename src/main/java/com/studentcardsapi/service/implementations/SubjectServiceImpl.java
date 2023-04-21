@@ -55,10 +55,8 @@ public class SubjectServiceImpl implements SubjectService {
     public Subject viewSubject(Long id) {
         log.info("SubjectController.viewSubject() is now being executed");
         Optional<Subject> subjectOp = this.subjectRepository.findById(id);
-        if(subjectOp.isEmpty()) {
-            throw new ApiRequestException(INVALID_SUBJECT_ID);
-        }
-        Subject subject = subjectOp.get();
+        Subject subject = subjectOp.orElseThrow(() ->
+                new ApiRequestException(INVALID_SUBJECT_ID);
         log.info("The subject " +subject.getId()+ " was found with the name " +subject.getName()+
                         " and year " +subject.getYear());
 
