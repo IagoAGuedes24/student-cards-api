@@ -24,4 +24,6 @@ public class ErrorMessages {
     public static final String MISSING_TOKEN = "the token for this request is missing or it is incomplete";
 
     public static final String SUBJECT_ALREADY_EXISTS = "this subject already exists at this year";
+
+    public static final String INVALID_SUBJECT_ID = "this subject id does not correspond to a valid subject";
 }

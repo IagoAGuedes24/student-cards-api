@@ -1,13 +1,12 @@
 package com.studentcardsapi.model;
 
 import com.studentcardsapi.enums.Year;
+import com.studentcardsapi.model.user.Professor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -19,4 +18,12 @@ public class Subject extends GenericModel{
 
     @Enumerated(EnumType.STRING)
     private Year year;
+
+    @ManyToMany
+    private List<Professor> professors;
+
+    @OneToMany
+    private List<Topic> topics;
+
+
 }

@@ -29,10 +29,15 @@ public class SubjectController {
         return new ResponseEntity<>(subject, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{year}" + LIST_ALL)
+    @GetMapping(YEAR + LIST_ALL)
     public ResponseEntity<?> listAllSubjects(@PathVariable Year year) {
         log.info("SubjectController.listAllSubjects() is now being executed");
         return new ResponseEntity<>(this.subjectService.listAllSubjects(year), HttpStatus.OK);
     }
 
+    @GetMapping(ID)
+    public ResponseEntity<?> viewSubject(@PathVariable Long id) {
+        log.info("SubjectController.viewSubject() is now being executed");
+        return new ResponseEntity<>(this.subjectService.viewSubject(id), HttpStatus.OK);
+    }
 }

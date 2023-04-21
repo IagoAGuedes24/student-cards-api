@@ -12,7 +12,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
+import static com.studentcardsapi.utils.messages.ErrorMessages.INVALID_SUBJECT_ID;
 import static com.studentcardsapi.utils.messages.ErrorMessages.SUBJECT_ALREADY_EXISTS;
 
 @Service
@@ -47,6 +49,18 @@ public class SubjectServiceImpl implements SubjectService {
         List<Subject> subjectList = this.subjectRepository.findAllByYear(year);
         log.info("Found " + subjectList.size() + "Subjects in the year " + year.name());
         return subjectList;
+    }
+
+    @Override
+    public Subject viewSubject(Long id) {
+        log.info("SubjectController.viewSubject() is now being executed");
+        Optional<Subject> subjectOp = this.subjectRepository.findById(id);
+        Subject subject = subjectOp.orElseThrow(() ->
+                new ApiRequestException(INVALID_SUBJECT_ID));
+        log.info("The subject " +subject.getId()+ " was found with the name " +subject.getName()+
+                        " and year " +subject.getYear());
+
+        return subject;
     }
 
 
