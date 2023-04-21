@@ -58,10 +58,11 @@ public class SubjectServiceImpl implements SubjectService {
         if(subjectOp.isEmpty()) {
             throw new ApiRequestException(INVALID_SUBJECT_ID);
         }
-        log.info("The subject " +subjectOp.get().getId()+ " was found with the name " +subjectOp.get().getName()+
-                        " and year " +subjectOp.get().getYear());
+        Subject subject = subjectOp.get();
+        log.info("The subject " +subject.getId()+ " was found with the name " +subject.getName()+
+                        " and year " +subject.getYear());
 
-        return subjectOp.get();
+        return subject;
     }
 
 
